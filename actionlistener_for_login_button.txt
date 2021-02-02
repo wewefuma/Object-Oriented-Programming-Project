@@ -1,0 +1,39 @@
+/*actionlistener for login button
+
+assuming na this is how the login panel looks like:
+
+                    Login
+
+        Username: ______________ (userBox)
+        Password: ______________ (passBox)
+  
+          button(Login) button(Register)
+
+*/
+
+b.addActionListener(new ActionListener()
+{
+  public void ActionPerformed(ActionEvent e)
+  {
+  	if((userBox != NULL) && (passBox != NULL))
+		{
+			try
+			{
+				String sql = "Select * from users_table Where username='" + userBox.get() + "' and password='" + passBox.get() + "'"; //query to perform to search through database for appropriate inputs
+				rs = stmt.executeQuery(sql);
+
+				if(rs.next())
+				{
+					
+				}
+				else
+				{
+					
+				}
+			}
+			catch	(SQLException err) 
+			{
+        JOptionPane.showMessageDialog(this, err.getMessage());
+			{
+}
+				
