@@ -11,10 +11,10 @@ assuming na this is how the login panel looks like:
 
 */
 
-b.addActionListener(new ActionListener()
-{
-  public void ActionPerformed(ActionEvent e)
-  {
+b.addActionListener(new ActionListener() 			//THIS IS FOR THE LOGIN BUTTON assuming that we are using mySQL
+{								//i can't run it kase wala akong mySQL here ;_;
+  public void ActionPerformed(ActionEvent e)			//also, this is in anonymous format (no separate function for actionlistener)
+  {								//you can use a function format naman if u like, go lang nang go hehe lodicakes go lang
   	if((userBox != NULL) && (passBox != NULL))
 		{
 			try
@@ -36,4 +36,9 @@ b.addActionListener(new ActionListener()
         JOptionPane.showMessageDialog(this, err.getMessage());
 			{
 }
+
+
+
+
+
 				
