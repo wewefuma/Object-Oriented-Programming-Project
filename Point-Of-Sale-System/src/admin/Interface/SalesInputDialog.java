@@ -10,13 +10,18 @@ package admin.Interface;
  * @author Nania Bznz
  */
 public class SalesInputDialog extends javax.swing.JDialog {
-
+    
+    protected SalesInputPanel salesinputpanel;
     /**
      * Creates new form SalesInputDialog
      */
     public SalesInputDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+    }
+
+    SalesInputDialog() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -82,6 +87,11 @@ public class SalesInputDialog extends javax.swing.JDialog {
         );
 
         btnExit.setText("Ok");
+        btnExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExitActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlExitLayout = new javax.swing.GroupLayout(pnlExit);
         pnlExit.setLayout(pnlExitLayout);
@@ -123,6 +133,11 @@ public class SalesInputDialog extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+        // TODO add your handling code here:
+        dispose();
+    }//GEN-LAST:event_btnExitActionPerformed
 
     /**
      * @param args the command line arguments
