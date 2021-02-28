@@ -5,6 +5,11 @@
  */
 package admin;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author WorldBank13
@@ -17,6 +22,41 @@ public class pnlInventory extends javax.swing.JPanel {
     public pnlInventory() {
         initComponents();
     }
+    
+     public void refreshInvtbl() {
+		DefaultTableModel model = new DefaultTableModel() {
+                @Override
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                  return false;
+                }
+                };
+		model.addColumn("Product");
+		model.addColumn("Quantity");
+                
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pos_db", "root",
+					"meetup73");
+
+			String query = "Select ProductName, Quantity from tblinventory";
+			java.sql.Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while (rs.next()) {
+				model.addRow(new Object[] { rs.getString("ProductName"), 
+                                    rs.getString("Quantity") });
+			}
+
+			rs.close();
+			stmt.close();
+			con.close();
+
+			tblProducts.setModel(model);
+		} catch (Exception e) {
+			// JOptionPane.showMessageDialog(null, e.printStackTrace());
+			e.printStackTrace();
+		}
+	}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -62,6 +102,8 @@ public class pnlInventory extends javax.swing.JPanel {
         btnDelete.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 24)); // NOI18N
         btnDelete.setText("Delete");
 
+        jScrollPane1.setName(""); // NOI18N
+
         tblProducts.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
         tblProducts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -86,10 +128,8 @@ public class pnlInventory extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        tblProducts.setColumnSelectionAllowed(true);
         tblProducts.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblProducts);
-        tblProducts.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -119,7 +159,7 @@ public class pnlInventory extends javax.swing.JPanel {
                                 .addContainerGap()
                                 .addComponent(txtProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 364, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -158,7 +198,7 @@ public class pnlInventory extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
+    private static javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblProducts;
     private javax.swing.JTextField txtProduct;
     private javax.swing.JTextField txtQuantity;

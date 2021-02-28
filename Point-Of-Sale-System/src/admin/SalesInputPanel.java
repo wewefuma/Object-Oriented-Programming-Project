@@ -6,6 +6,11 @@
 package admin;
 
 import java.awt.Dimension;
+import java.awt.Frame;
+import java.sql.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -16,13 +21,68 @@ public class SalesInputPanel extends javax.swing.JPanel {
     /**
      * Creates new form SalesInputPanel
      */
-    
+    public int intCount = 0;
     
     public SalesInputPanel() {
         
         initComponents();
         
     }
+    
+
+    public static void AddRow(Object[] row){
+        DefaultTableModel bagModel = (DefaultTableModel)tblBag.getModel();
+        bagModel.addRow(row);
+    }
+    
+    //method to display table
+    public void refreshtbl() {
+		DefaultTableModel model = new DefaultTableModel() {
+                @Override
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                  return false;
+                }
+                };
+		model.addColumn("ID");
+		model.addColumn("Product");
+		model.addColumn("Price");
+               
+                DefaultTableModel BagModel = new DefaultTableModel() {
+                @Override
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                  return false;
+                }
+                };
+		BagModel.addColumn("Qty");
+		BagModel.addColumn("Product");
+                BagModel.addColumn("Unit Price");
+		BagModel.addColumn("Price");
+                tblBag.setModel(BagModel);
+                
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pos_db", "root",
+					"meetup73");
+
+			String query = "select ID, ProductName, Price from tblinventory";
+			java.sql.Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while (rs.next()) {
+				model.addRow(new Object[] { rs.getString("ID"), 
+                                    rs.getString("ProductName"), rs.getString("Price") });
+			}
+
+			rs.close();
+			stmt.close();
+			con.close();
+
+			tblMenuTable.setModel(model);
+		} catch (Exception e) {
+			// JOptionPane.showMessageDialog(null, e.printStackTrace());
+			e.printStackTrace();
+		}
+	}
  
 
     /**
@@ -72,6 +132,11 @@ public class SalesInputPanel extends javax.swing.JPanel {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tblMenuTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblMenuTableMouseClicked(evt);
             }
         });
         scpMenuTable.setViewportView(tblMenuTable);
@@ -205,6 +270,23 @@ public class SalesInputPanel extends javax.swing.JPanel {
         dialog.setVisible(true);
     }//GEN-LAST:event_btnBagActionPerformed
 
+    private void tblMenuTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMenuTableMouseClicked
+        // TODO add your handling code here:
+        TableModel model = tblMenuTable.getModel();
+       String strQty = JOptionPane.showInputDialog("Enter Qty: ");
+       if(strQty != null){
+       int intQty = Integer.parseInt(strQty);
+       float fltRes = intQty * Float.parseFloat(model.getValueAt(tblMenuTable.getSelectedRow(), 2).toString());
+        String strRes = Float.toString(fltRes);
+        
+        Object[] row = {strQty, 
+                        model.getValueAt(tblMenuTable.getSelectedRow(), 1),
+                        model.getValueAt(tblMenuTable.getSelectedRow(), 2),
+                        strRes};
+        AddRow(row);
+       }
+    }//GEN-LAST:event_tblMenuTableMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBag;
@@ -215,7 +297,7 @@ public class SalesInputPanel extends javax.swing.JPanel {
     private javax.swing.JPanel pnlProdMenuPanel;
     private javax.swing.JScrollPane scpBag;
     private javax.swing.JScrollPane scpMenuTable;
-    private javax.swing.JTable tblBag;
+    private static javax.swing.JTable tblBag;
     private javax.swing.JTable tblMenuTable;
     // End of variables declaration//GEN-END:variables
 }

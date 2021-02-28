@@ -70,6 +70,7 @@ public class Admin_Interface extends javax.swing.JFrame {
         btnCashier.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				objLayout.show(pnlContent,"1");
+                                objInput.refreshtbl();
 			}
 	});
         
@@ -77,6 +78,7 @@ public class Admin_Interface extends javax.swing.JFrame {
         btnInventory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				objLayout.show(pnlContent,"2");
+                                objInventory.refreshInvtbl();
 			}
 	});
         
