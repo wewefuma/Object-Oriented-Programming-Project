@@ -38,6 +38,7 @@ public class SalesInputPanel extends javax.swing.JPanel {
         pnlProdMenuPanel = new javax.swing.JPanel();
         scpMenuTable = new javax.swing.JScrollPane();
         tblMenuTable = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
         pnlCheckoutpanel = new javax.swing.JPanel();
         btnBag = new javax.swing.JButton();
         lblTotal = new javax.swing.JLabel();
@@ -75,26 +76,39 @@ public class SalesInputPanel extends javax.swing.JPanel {
         });
         scpMenuTable.setViewportView(tblMenuTable);
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 36)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Sales Input");
+
         javax.swing.GroupLayout pnlProdMenuPanelLayout = new javax.swing.GroupLayout(pnlProdMenuPanel);
         pnlProdMenuPanel.setLayout(pnlProdMenuPanelLayout);
         pnlProdMenuPanelLayout.setHorizontalGroup(
             pnlProdMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlProdMenuPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(scpMenuTable, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(pnlProdMenuPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlProdMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlProdMenuPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(scpMenuTable, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         pnlProdMenuPanelLayout.setVerticalGroup(
             pnlProdMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlProdMenuPanelLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlProdMenuPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scpMenuTable, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(scpMenuTable)
+                .addGap(27, 27, 27))
         );
 
         pnlCheckoutpanel.setLayout(new java.awt.GridBagLayout());
 
         btnBag.setText("Bag");
+        btnBag.setMaximumSize(new java.awt.Dimension(81, 22));
+        btnBag.setMinimumSize(new java.awt.Dimension(81, 22));
         btnBag.setPreferredSize(new java.awt.Dimension(81, 22));
         btnBag.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -195,6 +209,7 @@ public class SalesInputPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBag;
     private javax.swing.JButton btnCheckout;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblTotal;
     private javax.swing.JPanel pnlCheckoutpanel;
     private javax.swing.JPanel pnlProdMenuPanel;
