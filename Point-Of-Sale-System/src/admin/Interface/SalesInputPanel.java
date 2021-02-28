@@ -6,6 +6,9 @@
 package admin.Interface;
 
 import java.awt.Dimension;
+import java.sql.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -21,6 +24,46 @@ public class SalesInputPanel extends javax.swing.JPanel {
     public SalesInputPanel() {
         
         initComponents();
+        
+    }
+    
+    public void refreshtbl() {
+		DefaultTableModel model = new DefaultTableModel() {
+                @Override
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                  return false;
+                }
+};
+		model.addColumn("ID");
+		model.addColumn("Product");
+		model.addColumn("Price");
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pnr_db", "pnr_app",
+					"password123");
+
+			String query = "select serial_number, status, assigned_station_id from machine";
+			java.sql.Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while (rs.next()) {
+				model.addRow(new Object[] { rs.getString("serial_number"), 
+                                    rs.getString("status"), rs.getString("assigned_station_id") });
+			}
+
+			rs.close();
+			stmt.close();
+			con.close();
+
+			tblMenuTable.setModel(model);
+		} catch (Exception e) {
+			// JOptionPane.showMessageDialog(null, e.printStackTrace());
+			e.printStackTrace();
+		}
+	}
+    
+    public void AddToBag(){
+        int intQty = Integer.parseInt(JOptionPane.showInputDialog("Enter Qty: "));
         
     }
  
@@ -72,6 +115,11 @@ public class SalesInputPanel extends javax.swing.JPanel {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tblMenuTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblMenuTableMouseClicked(evt);
             }
         });
         scpMenuTable.setViewportView(tblMenuTable);
@@ -204,6 +252,11 @@ public class SalesInputPanel extends javax.swing.JPanel {
         SalesInputDialog dialog = new SalesInputDialog(new javax.swing.JFrame(), true);
         dialog.setVisible(true);
     }//GEN-LAST:event_btnBagActionPerformed
+
+    private void tblMenuTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMenuTableMouseClicked
+        // TODO add your handling code here:
+        AddToBag();
+    }//GEN-LAST:event_tblMenuTableMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
