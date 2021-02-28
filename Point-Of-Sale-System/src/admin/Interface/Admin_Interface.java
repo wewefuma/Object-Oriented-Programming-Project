@@ -14,10 +14,15 @@ public class Admin_Interface extends javax.swing.JFrame {
     /**
      * Creates new form Admin_Interface
      */
+    
     public Admin_Interface() {
         initComponents();
+        
+        CardPanel.setVisible(true);
+       
     }
-
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -36,6 +41,7 @@ public class Admin_Interface extends javax.swing.JFrame {
         btnAccounts = new javax.swing.JButton();
         btnFeedback = new javax.swing.JButton();
         lblBackground = new javax.swing.JLabel();
+        CardPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(950, 655));
@@ -59,6 +65,11 @@ public class Admin_Interface extends javax.swing.JFrame {
         btnInventory.setBackground(new java.awt.Color(0, 0, 0));
         btnInventory.setFont(new java.awt.Font("Baskerville Old Face", 0, 18)); // NOI18N
         btnInventory.setText("Inventory");
+        btnInventory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInventoryActionPerformed(evt);
+            }
+        });
         pnlButtons.add(btnInventory);
 
         btnHistory.setBackground(new java.awt.Color(0, 0, 0));
@@ -93,12 +104,28 @@ public class Admin_Interface extends javax.swing.JFrame {
         getContentPane().add(lblBackground);
         lblBackground.setBounds(-40, -90, 1670, 900);
 
+        CardPanel.setLayout(new java.awt.CardLayout());
+        getContentPane().add(CardPanel);
+        CardPanel.setBounds(220, 10, 700, 610);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCashierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCashierActionPerformed
-        // TODO add your handling code here:
+        CardPanel.removeAll();
+        SalesInputPanel salesinputpanel = new SalesInputPanel();
+        CardPanel.add(salesinputpanel);
+        salesinputpanel.setVisible(true);
+        CardPanel.repaint();
+        CardPanel.revalidate();
+       
     }//GEN-LAST:event_btnCashierActionPerformed
+
+    private void btnInventoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInventoryActionPerformed
+        // TODO add your handling code here:
+      CardPanel.removeAll();
+        
+    }//GEN-LAST:event_btnInventoryActionPerformed
 
     /**
      * @param args the command line arguments
@@ -109,6 +136,7 @@ public class Admin_Interface extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
+        
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -126,7 +154,6 @@ public class Admin_Interface extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Admin_Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -136,6 +163,7 @@ public class Admin_Interface extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel CardPanel;
     private javax.swing.JButton btnAccounts;
     private javax.swing.JButton btnCashier;
     private javax.swing.JButton btnFeedback;
@@ -147,3 +175,8 @@ public class Admin_Interface extends javax.swing.JFrame {
     private javax.swing.JPanel pnlButtons;
     // End of variables declaration//GEN-END:variables
 }
+
+/*public void setSalesInput(SalesInputPanel sales_Input)
+{
+    this.sales_Input = sales_Input;
+}*/
