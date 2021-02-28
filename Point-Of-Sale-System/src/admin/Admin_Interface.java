@@ -95,7 +95,7 @@ public class Admin_Interface extends javax.swing.JFrame {
         getContentPane().setLayout(null);
 
         pnlButtons.setOpaque(false);
-        pnlButtons.setLayout(new java.awt.GridLayout(8, 1, 15, 15));
+        pnlButtons.setLayout(new java.awt.GridLayout(8, 1, 15, 10));
 
         btnHome.setBackground(new java.awt.Color(1, 50, 67));
         btnHome.setFont(new java.awt.Font("Baskerville Old Face", 0, 18)); // NOI18N
