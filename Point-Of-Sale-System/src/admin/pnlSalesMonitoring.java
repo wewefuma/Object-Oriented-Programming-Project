@@ -62,7 +62,7 @@ public class pnlSalesMonitoring extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(tblSales);
 
-        btnPrint.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
+        btnPrint.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 24)); // NOI18N
         btnPrint.setText("Clear and Print");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -81,7 +81,7 @@ public class pnlSalesMonitoring extends javax.swing.JPanel {
                         .addGap(178, 178, 178))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnPrint)
                 .addContainerGap())
         );
         layout.setVerticalGroup(

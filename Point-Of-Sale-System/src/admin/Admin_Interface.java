@@ -23,7 +23,7 @@ public class Admin_Interface extends javax.swing.JFrame {
         CardLayout objLayout = new CardLayout();
         pnlContent.setLayout(objLayout);
         
-        //calling the new panel welcome
+        //calling the new panel Welcome
         pnlWelcome objWelcome = new pnlWelcome();
         pnlContent.add(objWelcome, "1");
         objLayout.show(pnlContent, "1");
@@ -35,6 +35,25 @@ public class Admin_Interface extends javax.swing.JFrame {
         //calling the new panel History
         pnlHistory objHistory = new pnlHistory();
         pnlContent.add(objHistory, "3");
+        
+         //calling the new panel SalesMonitoring
+        pnlSalesMonitoring objSales = new pnlSalesMonitoring();
+        pnlContent.add(objSales, "4");
+        
+        //calling the new panel Logbook
+        pnlLogbook objLogbook = new pnlLogbook();
+        pnlContent.add(objLogbook, "5");
+        
+        //calling the new panel Accounts
+        pnlAccounts objAccounts = new pnlAccounts();
+        pnlContent.add(objAccounts, "6");
+        
+        //calling the new panel Accounts
+        pnlFeedback objFeedback = new pnlFeedback();
+        pnlContent.add(objFeedback, "7");
+        
+      
+        
         
          //showing the panel Welcome
         btnHome.addActionListener(new ActionListener() {
@@ -54,6 +73,34 @@ public class Admin_Interface extends javax.swing.JFrame {
         btnHistory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				objLayout.show(pnlContent,"3");
+			}
+	});
+        
+         //showing the panel Sales Monitoring
+        btnSalesMonitoring.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				objLayout.show(pnlContent,"4");
+			}
+	});
+        
+         //showing the panel User Logbook
+        btnUserLogbook.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				objLayout.show(pnlContent,"5");
+			}
+	});
+        
+         //showing the panel Accounts
+        btnAccounts.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				objLayout.show(pnlContent,"6");
+			}
+	});
+        
+         //showing the panel Feedback
+        btnFeedback.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				objLayout.show(pnlContent,"7");
 			}
 	});
         

@@ -53,13 +53,13 @@ public class pnlInventory extends javax.swing.JPanel {
 
         txtProduct.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
 
-        btnAdd.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
+        btnAdd.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 24)); // NOI18N
         btnAdd.setText("Add");
 
-        btnEdit.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
+        btnEdit.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 24)); // NOI18N
         btnEdit.setText("Edit");
 
-        btnDelete.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
+        btnDelete.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 24)); // NOI18N
         btnDelete.setText("Delete");
 
         tblProducts.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
