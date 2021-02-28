@@ -25,8 +25,12 @@ public class Admin_Interface extends javax.swing.JFrame {
         
         //calling the new panel Welcome
         pnlWelcome objWelcome = new pnlWelcome();
-        pnlContent.add(objWelcome, "1");
-        objLayout.show(pnlContent, "1");
+        pnlContent.add(objWelcome, "0");
+        objLayout.show(pnlContent, "0");
+        
+         //calling the new panel SalesInputPanel
+        SalesInputPanel objInput = new SalesInputPanel();
+        pnlContent.add(objInput, "1");
         
         //calling new panel Inventory
         pnlInventory objInventory = new pnlInventory();
@@ -48,7 +52,7 @@ public class Admin_Interface extends javax.swing.JFrame {
         pnlAccounts objAccounts = new pnlAccounts();
         pnlContent.add(objAccounts, "6");
         
-        //calling the new panel Accounts
+        //calling the new panel Feedback
         pnlFeedback objFeedback = new pnlFeedback();
         pnlContent.add(objFeedback, "7");
         
@@ -57,6 +61,13 @@ public class Admin_Interface extends javax.swing.JFrame {
         
          //showing the panel Welcome
         btnHome.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				objLayout.show(pnlContent,"0");
+			}
+	});
+        
+         //showing the panel Welcome
+        btnCashier.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				objLayout.show(pnlContent,"1");
 			}
