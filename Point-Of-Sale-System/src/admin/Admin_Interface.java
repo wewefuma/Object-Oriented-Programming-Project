@@ -148,7 +148,7 @@ public class Admin_Interface extends javax.swing.JFrame {
         lblBackground = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(940, 660));
+        setMinimumSize(new java.awt.Dimension(940, 675));
         setResizable(false);
         getContentPane().setLayout(null);
 
@@ -215,7 +215,7 @@ public class Admin_Interface extends javax.swing.JFrame {
         pnlButtons.add(btnFeedback);
 
         getContentPane().add(pnlButtons);
-        pnlButtons.setBounds(10, 0, 200, 630);
+        pnlButtons.setBounds(10, 10, 200, 630);
 
         pnlContent.setBackground(new java.awt.Color(255, 153, 51));
         pnlContent.setOpaque(false);
@@ -223,6 +223,7 @@ public class Admin_Interface extends javax.swing.JFrame {
         pnlContent.setBounds(220, 10, 700, 610);
 
         lblBackground.setIcon(new javax.swing.ImageIcon(getClass().getResource("/admin/Fast-Facts-about-PUP.jpg"))); // NOI18N
+        lblBackground.setMinimumSize(new java.awt.Dimension(1000, 760));
         getContentPane().add(lblBackground);
         lblBackground.setBounds(-40, -80, 1670, 900);
 

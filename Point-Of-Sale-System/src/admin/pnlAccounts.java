@@ -5,17 +5,79 @@
  */
 package admin;
 
+import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author WorldBank13
  */
-public class pnlAccounts extends javax.swing.JPanel {
 
-    /**
-     * Creates new form pnlAccounts
-     */
+public class pnlAccounts extends javax.swing.JPanel {
+private String name;
+private String password;
+private String username;
+private String Access;
+Connection objCon;
+
     public pnlAccounts() {
         initComponents();
+        createconn();
+        //add to the database
+        btnRegister.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try{
+                    
+                //Set the variables
+                name = txtName.getText();
+                password = txtPass.getText();
+                username = txtPass.getName();
+                Access = (String) cmbAccess.getSelectedItem();
+                
+                //Create a Statement object that will allow us to do operation
+                Statement objstmt = objCon.createStatement();
+                
+                //Create the statement that will manipulate data
+                String strOp = "INSERT INTO tblaccount VALUES ('"+name+"', '"+username+"', '"+password+"', '"+Access+"') ";
+                
+                //insert into the database
+                objstmt.execute(strOp);
+                objstmt.close();
+                JOptionPane.showMessageDialog(null, "Successfully Registered");
+        
+                }catch(Exception ex){
+                JOptionPane.showMessageDialog(null,ex);
+                }
+                
+            }
+        });
+      }
+    
+    void createconn(){
+    try {
+        
+            //load the driver
+           Class.forName("com.mysql.cj.jdbc.Driver");
+           
+           //connect to the database
+           objCon = DriverManager.getConnection("jdbc:mysql://localhost:3306/pos_db", "root", "haycab99");
+           
+           
+           
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(pnlAccounts.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+        Logger.getLogger(pnlAccounts.class.getName()).log(Level.SEVERE, null, ex);
+    }
     }
 
     /**
@@ -35,21 +97,23 @@ public class pnlAccounts extends javax.swing.JPanel {
         cmbAccess = new javax.swing.JComboBox();
         txtPass = new javax.swing.JPasswordField();
         btnRegister = new javax.swing.JButton();
+        lblName = new javax.swing.JLabel();
+        txtName = new javax.swing.JTextField();
 
         setMinimumSize(new java.awt.Dimension(700, 610));
 
         lblTitle.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
         lblTitle.setText("Register");
 
-        lblUser.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 24)); // NOI18N
+        lblUser.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
         lblUser.setText("User:");
 
-        lblPassword.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 24)); // NOI18N
+        lblPassword.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
         lblPassword.setText("Password:");
 
         txtUser.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
 
-        lblAccess.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 24)); // NOI18N
+        lblAccess.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
         lblAccess.setText("Access Type:");
 
         cmbAccess.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
@@ -57,33 +121,37 @@ public class pnlAccounts extends javax.swing.JPanel {
 
         txtPass.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        btnRegister.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 24)); // NOI18N
+        btnRegister.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
         btnRegister.setText("Register");
+
+        lblName.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
+        lblName.setText("Name:");
+
+        txtName.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap(158, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(214, 214, 214)
-                        .addComponent(lblUser)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblAccess)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(lblPassword)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(lblAccess)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cmbAccess, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                            .addComponent(cmbAccess, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblUser)
+                            .addComponent(lblPassword)
+                            .addComponent(lblName))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtPass, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+                            .addComponent(txtUser, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+                            .addComponent(txtName))))
                 .addGap(133, 133, 133))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -95,19 +163,26 @@ public class pnlAccounts extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitle)
-                .addGap(110, 110, 110)
+                .addGap(108, 108, 108)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblName)
+                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblUser)
-                    .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(58, 58, 58)
+                    .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblPassword)
-                    .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(45, 45, 45)
+                        .addComponent(lblPassword))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblAccess)
                     .addComponent(cmbAccess, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34))
         );
@@ -118,9 +193,11 @@ public class pnlAccounts extends javax.swing.JPanel {
     private javax.swing.JButton btnRegister;
     private javax.swing.JComboBox cmbAccess;
     private javax.swing.JLabel lblAccess;
+    private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JLabel lblUser;
+    private javax.swing.JTextField txtName;
     private javax.swing.JPasswordField txtPass;
     private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
