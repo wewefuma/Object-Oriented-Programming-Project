@@ -82,7 +82,9 @@ public class Cashier_Interface extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cashier_Interface");
+        setMinimumSize(new java.awt.Dimension(940, 680));
         setPreferredSize(new java.awt.Dimension(940, 680));
+        setResizable(false);
         getContentPane().setLayout(null);
 
         pnlButtons.setMinimumSize(new java.awt.Dimension(151, 286));
