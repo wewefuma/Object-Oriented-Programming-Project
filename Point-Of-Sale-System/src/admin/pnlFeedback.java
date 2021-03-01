@@ -5,17 +5,51 @@
  */
 package admin;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author WorldBank13
  */
 public class pnlFeedback extends javax.swing.JPanel {
 
-    /**
-     * Creates new form pnlFeedback
-     */
+    private String strFile;
+    private String strContent;
+    
     public pnlFeedback() {
         initComponents();
+        btnSend.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                    
+                    try{
+                        //make the title as the file name
+                        strFile = ("[Feedback]"+txtTitle.getText()+".txt");
+                        
+                        //get the content of the text area
+                        strContent = txtContent.getText();
+                        
+                        //write to the file
+                        PrintWriter objFeedback = new PrintWriter(new FileWriter(strFile),true);
+                        objFeedback.println(txtContent.getText());
+                        
+                        objFeedback.close();
+                        
+                        JOptionPane.showMessageDialog(null, "Succesfully Sent");
+                        txtTitle.setText("");
+                        txtContent.setText("");
+                    
+                    }catch(Exception ex){
+                    JOptionPane.showMessageDialog(null, ex);
+                    }
+                
+                 }
+        });
+        
     }
 
     /**
