@@ -40,20 +40,24 @@ Connection objCon;
                 //Set the variables
                 name = txtName.getText();
                 password = txtPass.getText();
-                username = txtPass.getName();
+                username = txtUser.getText();
                 Access = (String) cmbAccess.getSelectedItem();
                 
                 //Create a Statement object that will allow us to do operation
                 Statement objstmt = objCon.createStatement();
                 
                 //Create the statement that will manipulate data
-                String strOp = "INSERT INTO tblaccount VALUES ('"+name+"', '"+username+"', '"+password+"', '"+Access+"') ";
+                String strOp = "INSERT INTO tblaccount(Name,User,Password,Access) VALUES ('"+name+"', '"+username+"', '"+password+"', '"+Access+"') ";
                 
                 //insert into the database
                 objstmt.execute(strOp);
                 objstmt.close();
+                
                 JOptionPane.showMessageDialog(null, "Successfully Registered");
-        
+                txtName.setText("");
+                txtPass.setText("");
+                txtUser.setText("");
+                cmbAccess.setSelectedIndex(0);
                 }catch(Exception ex){
                 JOptionPane.showMessageDialog(null,ex);
                 }
@@ -163,11 +167,11 @@ Connection objCon;
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitle)
-                .addGap(108, 108, 108)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblName)
-                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, Short.MAX_VALUE)
+                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblName))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblUser)
                     .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -182,7 +186,7 @@ Connection objCon;
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblAccess)
                     .addComponent(cmbAccess, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addGap(18, 37, Short.MAX_VALUE)
                 .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34))
         );

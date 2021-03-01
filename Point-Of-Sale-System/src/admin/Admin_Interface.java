@@ -148,7 +148,7 @@ public class Admin_Interface extends javax.swing.JFrame {
         lblBackground = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(940, 675));
+        setMinimumSize(new java.awt.Dimension(940, 685));
         setResizable(false);
         getContentPane().setLayout(null);
 
