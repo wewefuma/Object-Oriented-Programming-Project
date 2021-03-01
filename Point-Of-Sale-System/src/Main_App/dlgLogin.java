@@ -5,18 +5,57 @@
  */
 package Main_App;
 
-/**
- *
- * @author WorldBank13
- */
+import admin.Admin_Interface;
+import cashier.Cashier_Interface;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
 public class dlgLogin extends javax.swing.JDialog {
 
-    /**
-     * Creates new form dlgLogin
-     */
-    public dlgLogin(java.awt.Frame parent, boolean modal) {
+   private String strUsername;
+   private String strPassword;
+   Connection objCon;
+
+    public String getStrUsername() {
+        return strUsername;
+    }
+
+    public String getStrPassword() {
+        return strPassword;
+    }
+    
+    
+    public dlgLogin(java.awt.Frame parent, boolean modal) throws SQLException {
         super(parent, modal);
         initComponents();
+        Createconn();
+        
+        
+        
+        
+    }
+    
+    void Createconn() {
+       try {
+           //load the driver
+           Class.forName("com.mysql.cj.jdbc.Driver");
+           
+           //connect to the database
+           objCon = DriverManager.getConnection("jdbc:mysql://localhost:3306/pos_db","root" ,"haycab99");
+         
+       } catch (ClassNotFoundException ex) {
+           Logger.getLogger(dlgLogin.class.getName()).log(Level.SEVERE, null, ex);
+       } catch (SQLException ex) {
+           Logger.getLogger(dlgLogin.class.getName()).log(Level.SEVERE, null, ex);
+       }
     }
 
     /**
@@ -45,6 +84,11 @@ public class dlgLogin extends javax.swing.JDialog {
         lblPassword.setText("Password:");
 
         btnEnter.setText("Enter");
+        btnEnter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnterActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -90,37 +134,58 @@ public class dlgLogin extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnEnterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnterActionPerformed
+                                               
+           //assignvalues to username and password
+           strUsername = txtUsername.getText();
+           strPassword = txtPassword.getText();
+           
+           try {    
+               //create a statement that allows us to do all operations to the database
+               Statement objStmt = objCon.createStatement();
+               //execute a query (methods to manipulate data)
+               ResultSet objRS = objStmt.executeQuery("SELECT User, Password, Access FROM tblaccount WHERE User = '"+strUsername+"' AND Password = '"+strPassword+"'");
+            
+               String user = objRS.getString("User");
+               String pass = objRS.getString("Password");
+               System.out.println("user: " + user + " pass: " + pass);
+               
+               
+           } catch (Exception ex) {
+               JOptionPane.showMessageDialog(null, "Incorrect Username / Password");
+               txtUsername.setText("");
+               txtPassword.setText("");
+               
+           }//try
+           
+           
+           
+           
+           
+           
+      
+       
+      
+       
+       
+        
+       
+        
+    }//GEN-LAST:event_btnEnterActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(dlgLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(dlgLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(dlgLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(dlgLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
+       
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                dlgLogin dialog = new dlgLogin(new javax.swing.JFrame(), true);
+                dlgLogin dialog = null;
+                try {
+                    dialog = new dlgLogin(new javax.swing.JFrame(), true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(dlgLogin.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -128,6 +193,9 @@ public class dlgLogin extends javax.swing.JDialog {
                     }
                 });
                 dialog.setVisible(true);
+                
+            
+            
             }
         });
     }
