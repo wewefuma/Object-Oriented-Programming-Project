@@ -24,14 +24,28 @@ public class pnlInventory extends javax.swing.JPanel {
     public pnlInventory() {
         initComponents();
     }
-    
+    public void addItem(){
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pos_db", "root", "meetup73");
+
+	    java.sql.Statement stmt = con.createStatement();
+                stmt.execute("INSERT INTO tblinventory (ProductName, Quantity, Price)"
+                        + "VALUES ('" + txtProduct.getText() + "','" + txtQuantity.getText() + "', '"
+                        + txtPrice.getText() + "')");
+                
+                refreshInvtbl();
+                clearTxt();
+                
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error Adding");
+            e.printStackTrace();
+        }
+    }
     public void removeItem(){
         DefaultTableModel bagModel = (DefaultTableModel)tblProducts.getModel();
         int intSelectedRow = tblProducts.getSelectedRow();
-        /*if(tblProducts.getSelectedRow() != -1) {
-               // remove selected row from the model
-               bagModel.removeRow(tblProducts.getSelectedRow());
-        }*/
         
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -44,9 +58,37 @@ public class pnlInventory extends javax.swing.JPanel {
             refreshInvtbl();
         }catch(Exception e){
             e.printStackTrace();
-            //JOptionPane.showMessageDialog(null, "Error Deleting");
+            JOptionPane.showMessageDialog(null, "Error Deleting");
         }
         
+    }
+    
+    public void editItem(){
+        try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pos_db", "root",
+					"meetup73");
+                        
+			java.sql.Statement stmt = con.createStatement();
+			
+                        stmt.execute("UPDATE tblinventory "
+                                + "SET ProductName = '" + txtProduct.getText() + "', Quantity = '"
+                                        + txtQuantity.getText() + "', Price = '" + txtPrice.getText() + "' "
+                                + "WHERE ProductName = '" + txtProduct.getText() + "'");
+                        
+			stmt.close();
+			con.close();
+                        refreshInvtbl();
+                        clearTxt();
+		} catch (Exception e) {
+			// JOptionPane.showMessageDialog(null, e.printStackTrace());
+			e.printStackTrace();
+		}
+    }
+    public void clearTxt(){
+        txtProduct.setText("");
+        txtQuantity.setText("");
+        txtPrice.setText("");
     }
     
      public void refreshInvtbl() {
@@ -136,6 +178,11 @@ public class pnlInventory extends javax.swing.JPanel {
 
         btnEdit.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 24)); // NOI18N
         btnEdit.setText("Edit");
+        btnEdit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnEditMouseClicked(evt);
+            }
+        });
 
         btnDelete.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 24)); // NOI18N
         btnDelete.setText("Delete");
@@ -245,23 +292,7 @@ public class pnlInventory extends javax.swing.JPanel {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
        
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pos_db", "root", "meetup73");
-
-            Statement stmt = con.createStatement();
-	    stmt.execute("INSERT INTO tblinventory (ProductName, Quantity, Price)"
-                        + "VALUES ('" + txtProduct.getText() + "','" + txtQuantity.getText() + "', '"
-            + txtPrice.getText() + "')");
-            
-            refreshInvtbl();
-            
-            txtProduct.setText("");
-            txtQuantity.setText("");
-            txtPrice.setText("");
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error Adding");
-        }
+     addItem();
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void jScrollPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane1MouseClicked
@@ -269,12 +300,42 @@ public class pnlInventory extends javax.swing.JPanel {
     }//GEN-LAST:event_jScrollPane1MouseClicked
 
     private void tblProductsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductsMouseClicked
+        int intRow = tblProducts.getSelectedRow();
+        
+        try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pos_db", "root",
+					"meetup73");
 
+			String query = "select ProductName, Quantity, Price from tblinventory where "
+                                + "ProductName = '" + tblProducts.getValueAt(intRow, 0) + "'";
+			java.sql.Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+                        
+			rs.next();
+                        
+                        txtProduct.setText(rs.getString("ProductName"));
+                        txtPrice.setText(rs.getString("Price"));
+                        txtQuantity.setText(rs.getString("Quantity"));
+
+			rs.close();
+			stmt.close();
+			con.close();
+		} catch (Exception e) {
+			// JOptionPane.showMessageDialog(null, e.printStackTrace());
+			e.printStackTrace();
+		}
     }//GEN-LAST:event_tblProductsMouseClicked
 
     private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
         removeItem();
+        clearTxt();
     }//GEN-LAST:event_btnDeleteMouseClicked
+
+    private void btnEditMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditMouseClicked
+        
+        editItem();
+    }//GEN-LAST:event_btnEditMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
