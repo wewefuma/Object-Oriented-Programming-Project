@@ -55,6 +55,7 @@ public class dlgSalesInputDialog extends javax.swing.JDialog {
         btnExit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         tblBagTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

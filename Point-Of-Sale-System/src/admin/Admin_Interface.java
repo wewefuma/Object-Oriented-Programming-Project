@@ -28,8 +28,8 @@ public class Admin_Interface extends javax.swing.JFrame {
         pnlContent.add(objWelcome, "0");
         objLayout.show(pnlContent, "0");
         
-         //calling the new panel SalesInputPanel
-        SalesInputPanel objInput = new SalesInputPanel();
+         //calling the new panel pnlSalesInputPanel
+        pnlSalesInputPanel objInput = new pnlSalesInputPanel();
         pnlContent.add(objInput, "1");
         
         //calling new panel Inventory
