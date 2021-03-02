@@ -245,6 +245,7 @@ public class pnlSalesInputPanel extends javax.swing.JPanel {
         pnlCheckoutpanel.add(scpBag, gridBagConstraints);
 
         btnCheckout.setText("Checkout");
+        btnCheckout.setEnabled(false);
         btnCheckout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCheckoutActionPerformed(evt);
@@ -296,6 +297,7 @@ public class pnlSalesInputPanel extends javax.swing.JPanel {
                         strRes};
         AddRow(row);
         compTotal();
+        btnCheckout.setEnabled(true);
        }
     }//GEN-LAST:event_tblMenuTableMouseClicked
 
@@ -317,7 +319,7 @@ public class pnlSalesInputPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCheckout;
+    public static javax.swing.JButton btnCheckout;
     private javax.swing.JLabel lblSalesInput;
     public static javax.swing.JLabel lblTotal;
     private javax.swing.JPanel pnlCheckoutpanel;
