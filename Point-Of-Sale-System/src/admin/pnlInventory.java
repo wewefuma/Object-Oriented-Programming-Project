@@ -63,28 +63,7 @@ public class pnlInventory extends javax.swing.JPanel {
         
     }
     
-    public void editItem(){
-        try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pos_db", "root",
-					"meetup73");
-                        
-			java.sql.Statement stmt = con.createStatement();
-			
-                        stmt.execute("UPDATE tblinventory "
-                                + "SET ProductName = '" + txtProduct.getText() + "', Quantity = '"
-                                        + txtQuantity.getText() + "', Price = '" + txtPrice.getText() + "' "
-                                + "WHERE ProductName = '" + txtProduct.getText() + "'");
-                        
-			stmt.close();
-			con.close();
-                        refreshInvtbl();
-                        clearTxt();
-		} catch (Exception e) {
-			// JOptionPane.showMessageDialog(null, e.printStackTrace());
-			e.printStackTrace();
-		}
-    }
+    
     public void clearTxt(){
         txtProduct.setText("");
         txtQuantity.setText("");
@@ -178,9 +157,15 @@ public class pnlInventory extends javax.swing.JPanel {
 
         btnEdit.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 24)); // NOI18N
         btnEdit.setText("Edit");
+        btnEdit.setEnabled(false);
         btnEdit.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnEditMouseClicked(evt);
+            }
+        });
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
             }
         });
 
@@ -300,7 +285,23 @@ public class pnlInventory extends javax.swing.JPanel {
     }//GEN-LAST:event_jScrollPane1MouseClicked
 
     private void tblProductsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductsMouseClicked
-        int intRow = tblProducts.getSelectedRow();
+        btnEdit.setEnabled(true);
+    }//GEN-LAST:event_tblProductsMouseClicked
+
+    private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
+        removeItem();
+        clearTxt();
+        btnEdit.setEnabled(false);
+    }//GEN-LAST:event_btnDeleteMouseClicked
+
+    private void btnEditMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditMouseClicked
+        
+        
+    }//GEN-LAST:event_btnEditMouseClicked
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+            dlgInventory Inventorydlg = new dlgInventory(new javax.swing.JFrame(), true);
+            int intRow = tblProducts.getSelectedRow();
         
         try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -314,9 +315,9 @@ public class pnlInventory extends javax.swing.JPanel {
                         
 			rs.next();
                         
-                        txtProduct.setText(rs.getString("ProductName"));
-                        txtPrice.setText(rs.getString("Price"));
-                        txtQuantity.setText(rs.getString("Quantity"));
+                        Inventorydlg.txtProductdlg.setText(rs.getString("ProductName"));
+                        Inventorydlg.txtPricedlg.setText(rs.getString("Price"));
+                        Inventorydlg.txtQuantitydlg.setText(rs.getString("Quantity"));
 
 			rs.close();
 			stmt.close();
@@ -325,31 +326,25 @@ public class pnlInventory extends javax.swing.JPanel {
 			// JOptionPane.showMessageDialog(null, e.printStackTrace());
 			e.printStackTrace();
 		}
-    }//GEN-LAST:event_tblProductsMouseClicked
-
-    private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
-        removeItem();
-        clearTxt();
-    }//GEN-LAST:event_btnDeleteMouseClicked
-
-    private void btnEditMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditMouseClicked
-        
-        editItem();
-    }//GEN-LAST:event_btnEditMouseClicked
+            
+            Inventorydlg.setLocationRelativeTo(txtProduct);
+            Inventorydlg.setVisible(true);
+            
+    }//GEN-LAST:event_btnEditActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDelete;
-    private javax.swing.JButton btnEdit;
+    public static javax.swing.JButton btnEdit;
     private javax.swing.JLabel jLabel1;
     private static javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblPrice;
     private javax.swing.JLabel lblProductName;
     private javax.swing.JLabel lblQuantity;
-    private javax.swing.JTable tblProducts;
-    private javax.swing.JTextField txtPrice;
-    private javax.swing.JTextField txtProduct;
-    private javax.swing.JTextField txtQuantity;
+    public static javax.swing.JTable tblProducts;
+    public static javax.swing.JTextField txtPrice;
+    public static javax.swing.JTextField txtProduct;
+    public static javax.swing.JTextField txtQuantity;
     // End of variables declaration//GEN-END:variables
 }
