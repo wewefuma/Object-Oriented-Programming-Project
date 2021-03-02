@@ -5,6 +5,7 @@
  */
 package admin;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -154,23 +155,38 @@ public class dlgSalesInputDialog extends javax.swing.JDialog {
       Date date = Calendar.getInstance().getTime();  
       DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd_hh-mm-ss");  
       String strDate = dateFormat.format(date);  
-     // writer.write(strDate + );  
+     
+     
+     File myObj = new File(strDate + ".txt");
       try {
-        File myObj = new File(strDate + ".txt");
-      if (myObj.createNewFile()) {
-      FileWriter objWriter = new FileWriter(strDate + ".txt");
-      objWriter.write(strDate + " " + salesinputpanel.lblTotal.getText());
-      objWriter.close();
+     
+      FileWriter objWriter = new FileWriter(myObj);
+      BufferedWriter objBWriter = new BufferedWriter(objWriter);
+      
+      objBWriter.write(tblBagTable.getColumnName(0) + "\t" +
+              tblBagTable.getColumnName(1) + "\t" + 
+              tblBagTable.getColumnName(2) + "\t" +
+              tblBagTable.getColumnName(3) + "\t\n");
+      
+       for (int row = 0; row < tblBagTable.getRowCount(); row++) {
+            for (int col = 0; col < tblBagTable.getColumnCount(); col++) {
+            objBWriter.write(tblBagTable.getValueAt(row,col).toString() + "\t");
+            }
+        objBWriter.write("\n");
+       }
+       objBWriter.write(salesinputpanel.lblTotal.getText());
+      
       refreshInv();
       
       JOptionPane.showMessageDialog(scpBagTable,  "Transaction Complete" , "complete" ,JOptionPane.WARNING_MESSAGE);
       
       dispose();
       clearBag();
-      } else {
-        System.out.println("File already exists.");
-      }
-    } catch (IOException e) {
+      
+      objBWriter.close();
+      objWriter.close();
+   
+    } catch(IOException e) {
       System.out.println("Transaction Failed");
       e.printStackTrace();
         }
@@ -235,12 +251,13 @@ public class dlgSalesInputDialog extends javax.swing.JDialog {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pos_db", "root",
 					"meetup73");
-                        
+            
             String query = "select Quantity from tblinventory where ProductName = '" + strProd + "';";
             java.sql.Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             rs.next();
-      
+            
+            
             int intUpdate = Integer.parseInt(rs.getString("Quantity")) - intQty;
             
             query = "update tblinventory set Quantity = " + intUpdate + " "
@@ -261,6 +278,8 @@ public class dlgSalesInputDialog extends javax.swing.JDialog {
         DefaultTableModel model = (DefaultTableModel) salesinputpanel.tblBag.getModel();
         model.setRowCount(0);
         salesinputpanel.lblTotal.setText("Total: ");
+        salesinputpanel.btnCheckout.setEnabled(false);
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
