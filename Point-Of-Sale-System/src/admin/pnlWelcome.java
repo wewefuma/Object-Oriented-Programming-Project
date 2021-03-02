@@ -5,6 +5,13 @@
  */
 package admin;
 
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author WorldBank13
@@ -16,7 +23,47 @@ public class pnlWelcome extends javax.swing.JPanel {
      */
     public pnlWelcome() {
         initComponents();
-    }
+        
+        Date objcurrDate = new Date();
+        SimpleDateFormat objdateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        lblDate.setText(objdateFormat.format(objcurrDate));
+        
+        CurrentTime();
+        
+        
+        
+    }//public pnlWelcome()
+    
+    
+    public void CurrentTime(){
+       
+        Thread objClock = new Thread(){
+            public void run(){
+                for(;;){
+                    
+                    Calendar objCal = new GregorianCalendar();
+                    int intsecond = objCal.get(Calendar.SECOND);
+                    int intminute = objCal.get(Calendar.MINUTE);
+                    int inthour = objCal.get(Calendar.HOUR);
+                    lblTime.setText(inthour + ":" + intminute + ":" + intsecond);
+        
+                    
+                    try {
+                        sleep(1000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(pnlWelcome.class.getName()).log(Level.SEVERE, null, ex);
+                
+                }//catch (InterruptedException ex)
+            
+                }//for(;;)
+                
+            }//public void run()}
+           
+       
+        };
+        objClock.start();
+    }//public void CurrentTime()
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -50,7 +97,7 @@ public class pnlWelcome extends javax.swing.JPanel {
         lblUserName.setFont(new java.awt.Font("Times New Roman", 0, 36)); // NOI18N
         lblUserName.setForeground(new java.awt.Color(255, 255, 255));
         lblUserName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblUserName.setText("[Name of The User]");
+        lblUserName.setText("Nita");
         lblUserName.setOpaque(true);
 
         lblTimeTitle.setBackground(new java.awt.Color(1, 50, 67));
@@ -71,7 +118,6 @@ public class pnlWelcome extends javax.swing.JPanel {
         lblTime.setFont(new java.awt.Font("Times New Roman", 0, 36)); // NOI18N
         lblTime.setForeground(new java.awt.Color(255, 255, 255));
         lblTime.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTime.setText("[insert Time]");
         lblTime.setMinimumSize(new java.awt.Dimension(178, 42));
         lblTime.setOpaque(true);
         lblTime.setPreferredSize(new java.awt.Dimension(178, 42));
@@ -80,7 +126,6 @@ public class pnlWelcome extends javax.swing.JPanel {
         lblDate.setFont(new java.awt.Font("Times New Roman", 0, 36)); // NOI18N
         lblDate.setForeground(new java.awt.Color(255, 255, 255));
         lblDate.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblDate.setText("[insert Date]");
         lblDate.setOpaque(true);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -138,4 +183,4 @@ public class pnlWelcome extends javax.swing.JPanel {
     private javax.swing.JLabel lblUserName;
     private javax.swing.JLabel lblWelcome;
     // End of variables declaration//GEN-END:variables
-}
+}//public class pnlWelcome extends javax.swing.JPanel

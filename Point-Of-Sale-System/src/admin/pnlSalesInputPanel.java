@@ -5,23 +5,108 @@
  */
 package admin;
 
-import java.awt.Dimension;
+import java.sql.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.TableModel;
 
 /**
  *
  * @author Nania Bznz
  */
-public class SalesInputPanel extends javax.swing.JPanel {
+public class pnlSalesInputPanel extends javax.swing.JPanel {
 
     /**
-     * Creates new form SalesInputPanel
+     * Creates new form pnlSalesInputPanel
      */
+    public int intCount = 0;
     
-    
-    public SalesInputPanel() {
+    public pnlSalesInputPanel() {
         
         initComponents();
         
+    }
+    
+    //method to Add Row in tables
+    public static void AddRow(Object[] row){
+        DefaultTableModel bagModel = (DefaultTableModel)tblBag.getModel();
+        bagModel.addRow(row);
+    }
+    
+    //method to display table
+    public void refreshtbl() {
+		DefaultTableModel model = new DefaultTableModel() {
+                @Override
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                  return false;
+                }
+                };
+		model.addColumn("ID");
+		model.addColumn("Product");
+		model.addColumn("Price");
+               
+                DefaultTableModel BagModel = new DefaultTableModel() {
+                @Override
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                  return false;
+                }
+                };
+		BagModel.addColumn("Qty");
+		BagModel.addColumn("Product");
+                BagModel.addColumn("Unit Price");
+		BagModel.addColumn("Price");
+                tblBag.setModel(BagModel);
+                
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbpos", "root",
+					"haycab99");
+
+			String query = "select ID, ProductName, Quantity, Price from tblinventory";
+			java.sql.Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+                        
+			while (rs.next()) {
+                             if(Integer.parseInt(rs.getString("Quantity")) > 0){
+				model.addRow(new Object[] { rs.getString("ID"), 
+                                    rs.getString("ProductName"), rs.getString("Price") });
+                             }
+			}
+
+			rs.close();
+			stmt.close();
+			con.close();
+
+			tblMenuTable.setModel(model);
+		} catch (Exception e) {
+			// JOptionPane.showMessageDialog(null, e.printStackTrace());
+			e.printStackTrace();
+		}
+	}
+    
+    //method to compute the sum of bought items
+    public void compTotal(){
+        int intCounter, intRow = tblBag.getRowCount();
+        float fltRes = 0, fltVal;
+        
+        for(intCounter = 0; intCounter < intRow; intCounter++){
+            lblTotal.setText(tblBag.getValueAt(intCounter, 3).toString());
+            fltVal = Float.parseFloat(((String) lblTotal.getText()).split("Total: ")[0].trim());
+            fltRes += fltVal;
+        }
+        
+        lblTotal.setText("Total: " + fltRes);
+    }
+    
+    //method to remove a row in bag
+    public void removeSelectedRows(JTable table){
+       DefaultTableModel bagModel = (DefaultTableModel)tblBag.getModel();
+        if(table.getSelectedRow() != -1) {
+               // remove selected row from the model
+               bagModel.removeRow(table.getSelectedRow());
+               compTotal();
+        }
     }
  
 
@@ -38,9 +123,8 @@ public class SalesInputPanel extends javax.swing.JPanel {
         pnlProdMenuPanel = new javax.swing.JPanel();
         scpMenuTable = new javax.swing.JScrollPane();
         tblMenuTable = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
+        lblSalesInput = new javax.swing.JLabel();
         pnlCheckoutpanel = new javax.swing.JPanel();
-        btnBag = new javax.swing.JButton();
         lblTotal = new javax.swing.JLabel();
         scpBag = new javax.swing.JScrollPane();
         tblBag = new javax.swing.JTable();
@@ -74,11 +158,16 @@ public class SalesInputPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tblMenuTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblMenuTableMouseClicked(evt);
+            }
+        });
         scpMenuTable.setViewportView(tblMenuTable);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 36)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Sales Input");
+        lblSalesInput.setFont(new java.awt.Font("Segoe UI Semibold", 1, 36)); // NOI18N
+        lblSalesInput.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblSalesInput.setText("Sales Input");
 
         javax.swing.GroupLayout pnlProdMenuPanelLayout = new javax.swing.GroupLayout(pnlProdMenuPanel);
         pnlProdMenuPanel.setLayout(pnlProdMenuPanelLayout);
@@ -87,7 +176,7 @@ public class SalesInputPanel extends javax.swing.JPanel {
             .addGroup(pnlProdMenuPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlProdMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblSalesInput, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlProdMenuPanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(scpMenuTable, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -98,7 +187,7 @@ public class SalesInputPanel extends javax.swing.JPanel {
             pnlProdMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlProdMenuPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblSalesInput, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(scpMenuTable)
                 .addGap(27, 27, 27))
@@ -106,24 +195,7 @@ public class SalesInputPanel extends javax.swing.JPanel {
 
         pnlCheckoutpanel.setLayout(new java.awt.GridBagLayout());
 
-        btnBag.setText("Bag");
-        btnBag.setMaximumSize(new java.awt.Dimension(81, 22));
-        btnBag.setMinimumSize(new java.awt.Dimension(81, 22));
-        btnBag.setPreferredSize(new java.awt.Dimension(81, 22));
-        btnBag.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBagActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.ipadx = 225;
-        gridBagConstraints.ipady = 50;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(6, 6, 0, 6);
-        pnlCheckoutpanel.add(btnBag, gridBagConstraints);
-
+        lblTotal.setFont(new java.awt.Font("Segoe UI Semibold", 1, 24)); // NOI18N
         lblTotal.setText("Total: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -153,6 +225,11 @@ public class SalesInputPanel extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
+        tblBag.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblBagMouseClicked(evt);
+            }
+        });
         scpBag.setViewportView(tblBag);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -168,6 +245,12 @@ public class SalesInputPanel extends javax.swing.JPanel {
         pnlCheckoutpanel.add(scpBag, gridBagConstraints);
 
         btnCheckout.setText("Checkout");
+        btnCheckout.setEnabled(false);
+        btnCheckout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCheckoutActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -199,23 +282,51 @@ public class SalesInputPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnBagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBagActionPerformed
-        // TODO add your handling code here:
-        SalesInputDialog dialog = new SalesInputDialog(new javax.swing.JFrame(), true);
-        dialog.setVisible(true);
-    }//GEN-LAST:event_btnBagActionPerformed
+    private void tblMenuTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMenuTableMouseClicked
+        
+       TableModel model = tblMenuTable.getModel();
+       String strQty = JOptionPane.showInputDialog("Enter Qty: ");
+       if(strQty != null){
+       int intQty = Integer.parseInt(strQty);
+       float fltRes = intQty * Float.parseFloat(model.getValueAt(tblMenuTable.getSelectedRow(), 2).toString());
+        String strRes = Float.toString(fltRes);
+        
+        Object[] row = {strQty, 
+                        model.getValueAt(tblMenuTable.getSelectedRow(), 1),
+                        model.getValueAt(tblMenuTable.getSelectedRow(), 2),
+                        strRes};
+        AddRow(row);
+        compTotal();
+        btnCheckout.setEnabled(true);
+       }
+    }//GEN-LAST:event_tblMenuTableMouseClicked
+
+    private void btnCheckoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckoutActionPerformed
+        
+        compTotal();
+                
+        dlgSalesInputDialog tdialog = new dlgSalesInputDialog(new javax.swing.JFrame(), true);
+        tdialog.setLocationRelativeTo(pnlProdMenuPanel);
+        tdialog.salesinputpanel = this;
+        tdialog.refreshTblDlg();
+        tdialog.setVisible(true);
+    }//GEN-LAST:event_btnCheckoutActionPerformed
+
+    private void tblBagMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBagMouseClicked
+        
+        removeSelectedRows(tblBag);
+    }//GEN-LAST:event_tblBagMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBag;
-    private javax.swing.JButton btnCheckout;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel lblTotal;
+    public static javax.swing.JButton btnCheckout;
+    private javax.swing.JLabel lblSalesInput;
+    public static javax.swing.JLabel lblTotal;
     private javax.swing.JPanel pnlCheckoutpanel;
     private javax.swing.JPanel pnlProdMenuPanel;
     private javax.swing.JScrollPane scpBag;
     private javax.swing.JScrollPane scpMenuTable;
-    private javax.swing.JTable tblBag;
+    public static javax.swing.JTable tblBag;
     private javax.swing.JTable tblMenuTable;
     // End of variables declaration//GEN-END:variables
 }

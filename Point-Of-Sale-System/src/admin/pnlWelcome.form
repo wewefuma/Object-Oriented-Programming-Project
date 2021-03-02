@@ -110,7 +110,7 @@
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="[Name of The User]"/>
+        <Property name="text" type="java.lang.String" value="Nita"/>
         <Property name="opaque" type="boolean" value="true"/>
       </Properties>
     </Component>
@@ -158,7 +158,6 @@
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="[insert Time]"/>
         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[178, 42]"/>
         </Property>
@@ -180,7 +179,6 @@
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="[insert Date]"/>
         <Property name="opaque" type="boolean" value="true"/>
       </Properties>
     </Component>

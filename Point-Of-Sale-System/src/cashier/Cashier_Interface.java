@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package cashier;
-import admin.SalesInputPanel;
+import admin.pnlSalesInputPanel;
 import admin.pnlWelcome;
 import admin.pnlFeedback;
 import java.awt.CardLayout;
@@ -33,7 +33,7 @@ public class Cashier_Interface extends javax.swing.JFrame {
         objLayout.show(pnlContent,"0");
         
         //create a new object SalesInputPanel and add to the layout
-        SalesInputPanel objSales = new SalesInputPanel();
+        pnlSalesInputPanel objSales = new pnlSalesInputPanel();
         pnlContent.add(objSales, "1");
         
         //Create a new object pnlFeedback and add to the layout
@@ -47,10 +47,11 @@ public class Cashier_Interface extends javax.swing.JFrame {
 			}
 	});
         
-         //showing the panel Welcome
+         //showing the panel Cashier
         btnCashier.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				objLayout.show(pnlContent,"1");
+                                objSales.refreshtbl();
 			}
 	});
         
@@ -140,37 +141,7 @@ public class Cashier_Interface extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Cashier_Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Cashier_Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Cashier_Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Cashier_Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Cashier_Interface().setVisible(true);
-            }
-        });
-    }
+ 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCashier;

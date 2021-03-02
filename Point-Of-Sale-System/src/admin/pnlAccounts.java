@@ -73,7 +73,7 @@ Connection objCon;
            Class.forName("com.mysql.cj.jdbc.Driver");
            
            //connect to the database
-           objCon = DriverManager.getConnection("jdbc:mysql://localhost:3306/pos_db", "root", "haycab99");
+           objCon = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbpos", "root", "haycab99");
            
            
            

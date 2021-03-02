@@ -29,7 +29,7 @@ public class Admin_Interface extends javax.swing.JFrame {
         objLayout.show(pnlContent, "0");
         
          //calling the new panel SalesInputPanel
-        SalesInputPanel objInput = new SalesInputPanel();
+        pnlSalesInputPanel objInput = new pnlSalesInputPanel();
         pnlContent.add(objInput, "1");
         
         //calling new panel Inventory
@@ -66,10 +66,11 @@ public class Admin_Interface extends javax.swing.JFrame {
 			}
 	});
         
-         //showing the panel Welcome
+         //showing the panel Cashier
         btnCashier.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				objLayout.show(pnlContent,"1");
+                                objInput.refreshtbl();
 			}
 	});
         
@@ -77,6 +78,7 @@ public class Admin_Interface extends javax.swing.JFrame {
         btnInventory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				objLayout.show(pnlContent,"2");
+                                objInventory.refreshInvtbl();
 			}
 	});
         
@@ -239,40 +241,7 @@ public class Admin_Interface extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCashierActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Admin_Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Admin_Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Admin_Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Admin_Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Admin_Interface().setVisible(true);
-            }
-        });
-    }
+  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAccounts;

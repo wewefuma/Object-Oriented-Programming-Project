@@ -22,16 +22,10 @@ public class dlgLogin extends javax.swing.JDialog {
 
    private String strUsername;
    private String strPassword;
+   private String strName;
+   
    Connection objCon;
 
-    public String getStrUsername() {
-        return strUsername;
-    }
-
-    public String getStrPassword() {
-        return strPassword;
-    }
-    
     
     public dlgLogin(java.awt.Frame parent, boolean modal) throws SQLException {
         super(parent, modal);
@@ -49,7 +43,7 @@ public class dlgLogin extends javax.swing.JDialog {
            Class.forName("com.mysql.cj.jdbc.Driver");
            
            //connect to the database
-           objCon = DriverManager.getConnection("jdbc:mysql://localhost:3306/pos_db","root" ,"haycab99");
+           objCon = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbpos","root" ,"haycab99");
          
        } catch (ClassNotFoundException ex) {
            Logger.getLogger(dlgLogin.class.getName()).log(Level.SEVERE, null, ex);
@@ -145,14 +139,42 @@ public class dlgLogin extends javax.swing.JDialog {
                Statement objStmt = objCon.createStatement();
                //execute a query (methods to manipulate data)
                ResultSet objRS = objStmt.executeQuery("SELECT User, Password, Access FROM tblaccount WHERE User = '"+strUsername+"' AND Password = '"+strPassword+"'");
-            
-               String user = objRS.getString("User");
-               String pass = objRS.getString("Password");
-               System.out.println("user: " + user + " pass: " + pass);
+               objRS.next();
+               //something match
+               if (objRS != null){
+                   
+                   
+                  
+                   if(objRS.getString("Access") .equals("Cashier")){
+                       
+                      
+                      
+                               
+                       Cashier_Interface objCashier = new Cashier_Interface();
+                       this.dispose();
+                       objCashier.setVisible(true);
+                       
+                   }//if(objRS.getString("Access") == "Cashier")
+                   else{
+                       Admin_Interface objAdmin = new Admin_Interface();
+                       this.dispose();
+                       objAdmin.setVisible(true);
+                       
+                   }
+               }// if (objRS != null)
+               
+               //doesn't match
+               else{
+                   
+                   txtUsername.setText("");
+                   txtPassword.setText("");
+               
+               }//else
                
                
-           } catch (Exception ex) {
-               JOptionPane.showMessageDialog(null, "Incorrect Username / Password");
+               
+           } catch (Exception objex) {
+               JOptionPane.showMessageDialog(null, objex);
                txtUsername.setText("");
                txtPassword.setText("");
                

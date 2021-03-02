@@ -5,22 +5,37 @@
  */
 package admin;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+
+import java.text.DateFormat;  
+import java.text.SimpleDateFormat;  
+import java.util.Date;  
+import java.util.Calendar; 
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Nania Bznz
  */
-public class SalesInputDialog extends javax.swing.JDialog {
+public class dlgSalesInputDialog extends javax.swing.JDialog {
     
-    protected SalesInputPanel salesinputpanel;
+    protected pnlSalesInputPanel salesinputpanel;
     /**
      * Creates new form SalesInputDialog
      */
-    public SalesInputDialog(java.awt.Frame parent, boolean modal) {
+    public dlgSalesInputDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
 
-    SalesInputDialog() {
+    dlgSalesInputDialog() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -136,7 +151,45 @@ public class SalesInputDialog extends javax.swing.JDialog {
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         // TODO add your handling code here:
-        dispose();
+        
+      Date date = Calendar.getInstance().getTime();  
+      DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd_hh-mm-ss");  
+      String strDate = dateFormat.format(date);  
+     
+     
+     File myObj = new File(strDate + ".txt");
+      try {
+     
+      FileWriter objWriter = new FileWriter(myObj);
+      BufferedWriter objBWriter = new BufferedWriter(objWriter);
+      
+      objBWriter.write(tblBagTable.getColumnName(0) + "\t" +
+              tblBagTable.getColumnName(1) + "\t" + 
+              tblBagTable.getColumnName(2) + "\t" +
+              tblBagTable.getColumnName(3) + "\t\n");
+      
+       for (int row = 0; row < tblBagTable.getRowCount(); row++) {
+            for (int col = 0; col < tblBagTable.getColumnCount(); col++) {
+            objBWriter.write(tblBagTable.getValueAt(row,col).toString() + "\t");
+            }
+        objBWriter.write("\n");
+       }
+       objBWriter.write(salesinputpanel.lblTotal.getText());
+      
+      refreshInv();
+      
+      JOptionPane.showMessageDialog(scpBagTable,  "Transaction Complete" , "complete" ,JOptionPane.WARNING_MESSAGE);
+      
+      dispose();
+      clearBag();
+      
+      objBWriter.close();
+      objWriter.close();
+   
+    } catch(IOException e) {
+      System.out.println("Transaction Failed");
+      e.printStackTrace();
+        }
     }//GEN-LAST:event_btnExitActionPerformed
 
     /**
@@ -156,20 +209,27 @@ public class SalesInputDialog extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SalesInputDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(dlgSalesInputDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SalesInputDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(dlgSalesInputDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SalesInputDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(dlgSalesInputDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SalesInputDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(dlgSalesInputDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                SalesInputDialog dialog = new SalesInputDialog(new javax.swing.JFrame(), true);
+                dlgSalesInputDialog dialog = new dlgSalesInputDialog(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -179,6 +239,51 @@ public class SalesInputDialog extends javax.swing.JDialog {
                 dialog.setVisible(true);
             }
         });
+    }
+    
+    public void refreshTblDlg(){
+                tblBagTable.setModel(salesinputpanel.tblBag.getModel());
+    }
+    
+    public void refreshInv(){
+       int intRowCount, intRow = tblBagTable.getRowCount();
+       int intQty;
+       for(intRowCount = 0, intQty = 0; intRowCount < intRow; intRowCount++){
+           intQty = Integer.parseInt(tblBagTable.getValueAt(intRowCount, 0).toString());
+           String strProd = tblBagTable.getValueAt(intRowCount, 1).toString();
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbpos", "root",
+					"haycab99");
+            
+            String query = "select Quantity from tblinventory where ProductName = '" + strProd + "';";
+            java.sql.Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            rs.next();
+            
+            
+            int intUpdate = Integer.parseInt(rs.getString("Quantity")) - intQty;
+            
+            query = "update tblinventory set Quantity = " + intUpdate + " "
+                    + "where ProductName = '" + strProd + "';";
+            
+            stmt.executeUpdate(query);
+        
+            rs.close();
+            stmt.close();
+            con.close();
+	} catch (Exception e) {
+            e.printStackTrace();
+	}
+       }
+    }
+    
+    public void clearBag(){
+        DefaultTableModel model = (DefaultTableModel) salesinputpanel.tblBag.getModel();
+        model.setRowCount(0);
+        salesinputpanel.lblTotal.setText("Total: ");
+        salesinputpanel.btnCheckout.setEnabled(false);
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
